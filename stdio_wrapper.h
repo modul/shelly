@@ -4,6 +4,6 @@
 #define BAUDRATE 19200
 
 void init_stdio();
-int pending_data();
+int pending_input();
 
 #endif

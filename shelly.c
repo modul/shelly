@@ -3,6 +3,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 
+#include "stdio_wrapper.h"
 #include "shelly.h"
 
 unsigned short tp = 0;
@@ -82,8 +83,8 @@ int shelly(const char *input)
 			break;
 
 			case ']':
-				loop = 1;
 				if (tape[tp]) {
+					loop = 1;
 					while (loop) {
 						if (*(--input) == '[') 
 							loop--;
@@ -91,12 +92,18 @@ int shelly(const char *input)
 							loop++;
 						else if (*input == 0) {
 							puts_P(PSTR("a lonesome ] ..."));
+							return -1;
 						}
 					}
 				}
 			break;
 		}
 		input++;
+	}
+
+	if (loop > 0) {
+		puts_P(PSTR("unmatched loops"));
+		return -1;
 	}
 	return 0;
 }

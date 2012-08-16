@@ -22,7 +22,7 @@ static int uart_getchar(FILE *stream)
 	return u&0xFF;
 }
 
-int pending_data()
+int pending_input()
 {
 	uint8_t u = (uint8_t) uart_getc()&0xFF;
 	if (u > 0) {
