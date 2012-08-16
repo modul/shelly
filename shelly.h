@@ -5,6 +5,9 @@
 #define SHELLY_REAL_EOF 0
 #define SHELLY_TAPESIZE 256
 
+//#define SHELLY_WRAPPING_TAPE
+//#define SHELLY_WRAPPING_CELL
+
 void forget();
 int shelly(const char *input);
 
