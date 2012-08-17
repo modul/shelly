@@ -13,7 +13,7 @@
 extern uint8_t tape[SHELLY_TAPESIZE];
 extern unsigned short tp;
 
-//#define DEBUG
+#define DEBUG
 
 int main()
 {
@@ -23,11 +23,9 @@ int main()
 
 	while (42) {
 		gets(line);
-		if ((e = shelly(line)) != SHELLY_SUCCESS) {
-			putchar(e); putchar(10);
-		}
+		e = shelly(line);
 #ifdef DEBUG
-		printf_P(PSTR("@% 3u [% 3u]\n"), tp, tape[tp]);
+		printf_P(PSTR("\n%c % 3u % 3u\n"), e==0?'_':e, tp, tape[tp]);
 #endif
 	}
 	return 0;
