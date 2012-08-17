@@ -1,34 +1,32 @@
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <avr/pgmspace.h>
-#include <util/delay.h>
-
+#include <stdint.h>
 #include <string.h>
 #include <stdio.h>
 
-#include "stdio_wrapper.h"
-#include "uart.h"
 #include "shelly.h"
 
 extern uint8_t tape[SHELLY_TAPESIZE];
 extern unsigned short tp;
 
-#define DEBUG
+#define BUFSIZE 512
 
 int main()
 {
-	int e;
-	char line[512];
-	init_stdio();
+	int e = 0;
+	char line[BUFSIZE];
+
+	printf("Shelly");
+#ifdef SHELLY_EXTENDED
+	puts("Extended");
+#else
+	putchar(10);
+#endif
 
 	while (42) {
-		gets(line); e = strlen(line);
-		if (line[e-1] == '\\') gets(line+e);
-		if (!*line) continue;
+		printf(" [%c % 3u % 3u] ", e==0?'_':e, tp, tape[tp]);
+		if (!fgets(line, BUFSIZE, stdin)) return 0;
+		if ((e = strlen(line)) > 1 && line[e-2] == '\\') fgets(line+e-2, BUFSIZE-e, stdin);
+		if (*line == 10) {e = 0; continue;}
 		e = shelly(line);
-#ifdef DEBUG
-		printf_P(PSTR(" [%c % 3u % 3u]\n"), e==0?'_':e, tp, tape[tp]);
-#endif
 	}
 	return 0;
 }

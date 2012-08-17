@@ -1,11 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <avr/io.h>
-#include <avr/pgmspace.h>
-#include <util/delay.h>
-
-#include "stdio_wrapper.h"
 #include "shelly.h"
 
 unsigned short tp = 0;
@@ -65,11 +57,7 @@ int shelly(const char *ip)
 				else if (*ip == 0) return SHELLY_UNMATCH;
 			}
 		}
-
-			/* totally extended commands */
-
-		else if (*ip == '_') 
-			for (tmp=0; tmp<tape[tp]; tmp++, _delay_ms(10));
+#ifdef SHELLY_EXTENDED
 		else if (*ip == '(') tape[tp] <<= 1;
 		else if (*ip == ')') tape[tp] >>= 1;
 		else if (*ip == '{') tape[tp] *= 10;
@@ -78,13 +66,18 @@ int shelly(const char *ip)
 			srand(tape[tp]);
 			tape[tp] = (uint8_t) rand();
 		}
-		ip++;
+#endif
+#ifdef __AVR_ARCH__
+		else if (*ip == '_') 
+			for (tmp=0; tmp<tape[tp]; tmp++, _delay_ms(10));
 
 		if (pending_input()) {
 			char c = getchar();
 			if (c == SHELLY_EOF) return SHELLY_USREXIT;
 			else ungetc(c, stdin);
 		}
+#endif
+		ip++;
 	}
 	return SHELLY_SUCCESS;
 }

@@ -1,0 +1,6 @@
+   text	   data	    bss	    dec	    hex	filename
+    223	      0	      0	    223	     df	main.o
+    732	      0	      2	    734	    2de	shelly.o
+     94	     28	      0	    122	     7a	stdio_wrapper.o
+    402	      0	     69	    471	    1d7	uart.o
+   3242	     32	    333	   3607	    e17	project.out
