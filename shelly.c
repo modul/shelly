@@ -74,7 +74,7 @@ int shelly(const char *ip)
 		else if (*ip == ']' && tape[tp]) {
 			loop = 1;
 			while (loop) {
-				if (*(++ip) == ']') loop++;
+				if (*(--ip) == ']') loop++;
 				else if (*ip == '[') loop--;
 				else if (*ip == 0) return SHELLY_UNMATCH;
 			}
@@ -86,8 +86,8 @@ int shelly(const char *ip)
 			for (tmp=0; tmp<tape[tp]; tmp++, _delay_ms(10));
 		else if (*ip == '(') tape[tp] <<= 1;
 		else if (*ip == ')') tape[tp] >>= 1;
-		else if (*ip == '{') tape[tp] /= 10;
-		else if (*ip == '}') tape[tp] *= 10;
+		else if (*ip == '{') tape[tp] *= 10;
+		else if (*ip == '}') tape[tp] /= 10;
 		else if (*ip == '@') {
 			srand(tape[tp]);
 			tape[tp] = (uint8_t) rand();
