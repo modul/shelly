@@ -27,7 +27,7 @@ int main()
 		if (!*line) continue;
 		e = shelly(line);
 #ifdef DEBUG
-		printf_P(PSTR(" %c % 3u % 3u\n"), e==0?'_':e, tp, tape[tp]);
+		printf_P(PSTR(" [%c % 3u % 3u]\n"), e==0?'_':e, tp, tape[tp]);
 #endif
 	}
 	return 0;
