@@ -18,11 +18,13 @@ extern unsigned short tp;
 int main()
 {
 	int e;
-	char line[128];
+	char line[512];
 	init_stdio();
 
 	while (42) {
-		gets(line);
+		gets(line); e = strlen(line);
+		if (line[e-1] == '\\') gets(line+e);
+		if (!*line) continue;
 		e = shelly(line);
 #ifdef DEBUG
 		printf_P(PSTR("\n%c % 3u % 3u\n"), e==0?'_':e, tp, tape[tp]);
