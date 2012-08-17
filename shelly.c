@@ -38,8 +38,9 @@ int shelly(const char *ip)
 		else if (*ip == '.') 
 			putchar((char) tape[tp]);
 		else if (*ip == ',') {
-			tape[tp] = (uint8_t) getchar();
-			if (tape[tp] == SHELLY_EOF) tape[tp] = SHELLY_REAL_EOF;
+			char c = getchar();
+			if (c == SHELLY_EOF || c == EOF) tape[tp] = SHELLY_REAL_EOF;
+			else tape[tp] = (uint8_t) c;
 		}
 		else if (*ip == '[' && tape[tp] == 0) {
 			loop = 1;
