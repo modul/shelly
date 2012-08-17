@@ -9,6 +9,7 @@
 #define SHELLY_OVERFLW 'O'
 #define SHELLY_UNMATCH 'B'
 #define SHELLY_TAPELIM 'M'
+#define SHELLY_USREXIT 'E'
 #define SHELLY_SUCCESS  0
 
 void forget();

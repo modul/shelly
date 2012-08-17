@@ -79,6 +79,12 @@ int shelly(const char *ip)
 			tape[tp] = (uint8_t) rand();
 		}
 		ip++;
+
+		if (pending_input()) {
+			char c = getchar();
+			if (c == SHELLY_EOF) return SHELLY_USREXIT;
+			else ungetc(c, stdin);
+		}
 	}
 	return SHELLY_SUCCESS;
 }
