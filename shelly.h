@@ -11,9 +11,6 @@
 #define SHELLY_TAPELIM 'M'
 #define SHELLY_SUCCESS  0
 
-//#define SHELLY_WRAPPING_TAPE
-//#define SHELLY_WRAPPING_CELL
-
 void forget();
 int shelly(const char *input);
 

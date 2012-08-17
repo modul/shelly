@@ -24,38 +24,24 @@ int shelly(const char *ip)
 
 	while (*ip) {
 		if (*ip == '+') {
-			tape[tp] += 1;
-#ifndef SHELLY_WRAPPING_CELL
-			if (tape[tp] == 0)
-				return SHELLY_OVERFLW;
-#endif
+			if (tape[tp] < 255)
+				tape[tp] += 1;
+			else return SHELLY_OVERFLW;
 		}
 		else if (*ip == '-') {
-			tape[tp] -= 1;
-#ifndef SHELLY_WRAPPING_CELL
-			if (tape[tp] == 255)
-				return SHELLY_UNDRFLW;
-#endif
+			if (tape[tp] > 0)
+				tape[tp] -= 1;
+			else return SHELLY_UNDRFLW;
 		}
 		else if (*ip == '>') {
 			if (tp < SHELLY_TAPESIZE-1)
 				tp++;
-			else
-#ifndef SHELLY_WRAPPING_TAPE
-				return SHELLY_TAPELIM;
-#else
-				tp = 0;
-#endif
+			else return SHELLY_TAPELIM;
 		}
 		else if (*ip == '<') {
 			if (tp > 0)
 				tp--;
-			else
-#ifndef SHELLY_WRAPPING_TAPE
-				return SHELLY_TAPELIM;
-#else
-				tp = SHELLY_TAPESIZE-1;
-#endif
+			else return SHELLY_TAPELIM;
 		}
 		else if (*ip == '.') 
 			putchar((char) tape[tp]);
