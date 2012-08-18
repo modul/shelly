@@ -1,5 +1,5 @@
-#ifndef _SHELLY_
-#define _SHELLY_
+#ifndef SHELLY_H
+#define SHELLY_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -11,9 +11,12 @@
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 #include "stdio_wrapper.h"
+extern int shelly_avr(const char *ip);
 #endif
 
-#define SHELLY_EXTENDED
+#ifndef strict
+extern int shelly_extra(const char *ip);
+#endif
 
 #define SHELLY_EOF '$'
 #define SHELLY_REAL_EOF 0
@@ -27,6 +30,6 @@
 #define SHELLY_SUCCESS  0
 
 void forget();
-int shelly(const char *input);
+int shelly(const char *ip);
 
 #endif

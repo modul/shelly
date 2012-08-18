@@ -1,4 +1,4 @@
-shelly: shelly.o main.o
+shelly: shelly.o shelly_extra.o main.o
 	gcc -o $@ $^
 
 clean: 
