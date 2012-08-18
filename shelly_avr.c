@@ -27,8 +27,8 @@ int shelly_avr(const char **ip)
 		unsigned tmp;
 		for (tmp=0; tmp<tape[tp]; tmp++, _delay_ms(1));
 	}
-	else if (**ip == 'd') 
-		PORTD = (tape[tp]<<5)&0xE0;
+	else if (**ip == 'o') 
+		PORTD = (tape[tp]<<2)&0xFC;
 	return SHELLY_SUCCESS;
 }
 #endif

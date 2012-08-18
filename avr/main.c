@@ -13,14 +13,15 @@
 extern uint8_t tape[SHELLY_TAPESIZE];
 extern unsigned short tp;
 
+void setup();
+
 #define DEBUG
 
 int main()
 {
 	int e;
 	char line[512];
-	init_stdio();
-	DDRD = 0xE0;
+	setup();
 
 	while (42) {
 		gets(line); e = strlen(line);
@@ -32,4 +33,30 @@ int main()
 #endif
 	}
 	return 0;
+}
+
+void setup()
+{
+    cli();
+
+    /* I/O setup */
+#if defined(__AVR_ATmega8__)
+    PORTD = 0x00;
+    DDRD  = 0xFC; // outputs PD2..PD7
+	PORTC = 0x38; 
+	DDRC  = 0x00; // inputs PC0..PC5 (5..3 digital, 2..0 analog)
+
+    /* PWM setup */
+    TCCR1A = (1<<COM1B1)|(1<<COM1A1)|(1<<WGM10);
+	TCCR1B = (1<<CS11);
+   	OCR1A = OCR1B = 0;
+
+#elif defined(__AVR_ATtiny85__)
+#endif
+
+    /* ADC setup */
+    ADCSRA = (1<<ADEN)|(1<<ADPS1)|(1<<ADPS0);
+	
+	/* Terminal I/O setup */
+	init_stdio();
 }
