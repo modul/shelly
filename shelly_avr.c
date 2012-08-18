@@ -29,6 +29,17 @@ int shelly_avr(const char **ip)
 	}
 	else if (**ip == 'o') 
 		PORTD = (tape[tp]<<2)&0xFC;
+	else if (**ip == 'a') {
+		ADMUX = (tape[tp]&3)|(1<<REFS1)|(1<<REFS0);
+		ADCSRA |= (1<<ADSC);        
+		while (ADCSRA & (1<<ADSC)); 
+		tape[tp] = (uint8_t) (ADCW>>2);
+	}
+	else if (**ip == 'p')
+		OCR1A = tape[tp];
+	else if (**ip == 'P')
+		OCR1B = tape[tp];
+
 	return SHELLY_SUCCESS;
 }
 #endif

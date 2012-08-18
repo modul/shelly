@@ -43,10 +43,11 @@ void setup()
 #if defined(__AVR_ATmega8__)
     PORTD = 0x00;
     DDRD  = 0xFC; // outputs PD2..PD7
-	PORTC = 0x38; 
-	DDRC  = 0x00; // inputs PC0..PC5 (5..3 digital, 2..0 analog)
+	PORTC = 0x30; // pull-ups PC5, PC4
+	DDRC  = 0x00; // inputs PC0..PC5 (5..4 digital, 3..0 analog)
 
     /* PWM setup */
+	DDRB = (1<<PB1)|(1<<PB2);
     TCCR1A = (1<<COM1B1)|(1<<COM1A1)|(1<<WGM10);
 	TCCR1B = (1<<CS11);
    	OCR1A = OCR1B = 0;
