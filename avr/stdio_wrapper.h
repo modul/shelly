@@ -1,5 +1,5 @@
-#ifndef _UART_WRAPPER_
-#define _UART_WRAPPER_
+#ifndef STDIO_WRAPPER_H
+#define STDIO_WRAPPER_H
 
 #define BAUDRATE 19200
 
