@@ -20,12 +20,6 @@
 unsigned short tp = 0;
 uint8_t tape[SHELLY_TAPESIZE];
 
-void forget()
-{
-	tp = 0;
-	memset(tape, 0, SHELLY_TAPESIZE);
-}
-
 int shelly(const char *ip)
 {
 #if !defined(strict) && !defined(__AVR_ARCH__)

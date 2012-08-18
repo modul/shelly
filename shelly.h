@@ -46,7 +46,6 @@ extern int shelly_extra(const char **ip);
 #define SHELLY_USREXIT 'E'
 #define SHELLY_SUCCESS  0
 
-void forget();
 int shelly(const char *ip);
 
 #endif
