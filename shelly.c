@@ -62,10 +62,10 @@ int shelly(const char *ip)
 		else {
 			int r; 
 #ifndef strict
-			if ((r = shelly_extra(ip)) != SHELLY_SUCCESS) return r;
+			if ((r = shelly_extra(&ip)) != SHELLY_SUCCESS) return r;
 #endif
 #ifdef __AVR_ARCH__
-			if ((r = shelly_avr(ip)) != SHELLY_SUCCESS) return r;
+			if ((r = shelly_avr(&ip)) != SHELLY_SUCCESS) return r;
 #endif
 		}
 #endif

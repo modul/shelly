@@ -11,11 +11,11 @@
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 #include "stdio_wrapper.h"
-extern int shelly_avr(const char *ip);
+extern int shelly_avr(const char **ip);
 #endif
 
 #ifndef strict
-extern int shelly_extra(const char *ip);
+extern int shelly_extra(const char **ip);
 #endif
 
 #define SHELLY_EOF '$'
