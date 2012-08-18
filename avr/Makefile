@@ -1,7 +1,7 @@
 mcu_string=atmega8
 avrdude_mcu_string=m8
 freq_cpu=8000000UL
-sourcefiles=main.c uart.c stdio_wrapper.c ../shelly.c
+sourcefiles=main.c uart.c stdio_wrapper.c ../shelly.c ../shelly_extra.c ../shelly_avr.c
 projectname=project
 optlevel=3
 avrdude_programmer=avrispmkII
