@@ -11,6 +11,9 @@ void forget()
 
 int shelly(const char *ip)
 {
+#if !defined(strict) && !defined(__AVR_ARCH__)
+	srand(time(0));
+#endif
 	while (*ip) {
 		if (*ip == '+') {
 			if (tape[tp] < 255)
