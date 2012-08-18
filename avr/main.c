@@ -20,6 +20,7 @@ int main()
 	int e;
 	char line[512];
 	init_stdio();
+	DDRD = 0xE0;
 
 	while (42) {
 		gets(line); e = strlen(line);
