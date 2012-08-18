@@ -86,6 +86,14 @@ int shelly(const char *ip)
 #endif
 		}
 #endif
+
+#ifdef __AVR_ARCH__
+		if (pending_input()) {
+			char c = getchar();
+			if (c == SHELLY_EOF) return SHELLY_USREXIT;
+			else ungetc(c, stdin);
+		}
+#endif
 		ip++;
 	}
 	return SHELLY_SUCCESS;
