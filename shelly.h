@@ -23,21 +23,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef __AVR_ARCH__
-#include <avr/io.h>
-#include <avr/pgmspace.h>
-#include <util/delay.h>
-#include "stdio_wrapper.h"
-extern int shelly_avr(const char **ip);
-#endif
-
-#ifndef strict
-extern int shelly_extra(const char **ip);
-#endif
-
+#define SHELLY_TAPESIZE 1024
 #define SHELLY_EOF '$'
 #define SHELLY_REAL_EOF 0
-#define SHELLY_TAPESIZE 256
 
 #define SHELLY_UNDRFLW 'U'
 #define SHELLY_OVERFLW 'O'
@@ -47,5 +35,21 @@ extern int shelly_extra(const char **ip);
 #define SHELLY_SUCCESS  0
 
 int shelly(const char *ip);
+
+#ifdef __AVR_ARCH__
+#undef SHELLY_TAPESIZE
+#define SHELLY_TAPESIZE 256
+
+#include <avr/io.h>
+#include <avr/pgmspace.h>
+#include <util/delay.h>
+#include "stdio_wrapper.h"
+
+extern int shelly_avr(const char **ip);
+#endif // __AVR_ARCH__
+
+#ifndef strict
+extern int shelly_extra(const char **ip);
+#endif // !strict
 
 #endif
