@@ -24,39 +24,39 @@ in any way suitable.
 
 Strictly Brainfuck Instructions
 -------------------------------
-+, -, <, >, [, ], ,, . -- as usual
+`+ - < > [ ] , .` -- as usual
 
-The x86 frontend also supports '!' to separate program code
+The x86 frontend also supports `!` to separate program code
 from program input, when reading code from stdin.
-On any architecture, when reading user input (,-instruction),
-the system EOF or a $ will get converted to zero. So the code
-,[.,] will terminate on EOF or when a $ was read.
-This can be changed through SHELLY_REAL_EOF and SHELLY_EOF
-in shelly.h.
+On any architecture, when reading user input (`,` instruction),
+the system EOF or a `$` will get converted to zero. So the code
+`,[.,]` will terminate on EOF or when a $ was read.
+This can be changed through `SHELLY_REAL_EOF` and `SHELLY_EOF`
+in `shelly.h`.
 
-Extended Instructions - shelly_extra.c
+Extended Instructions - `shelly_extra.c`
 --------------------------------------
 These features can be turned off by defining 'strict'.
 
 So far:
-* : -- print cell value (decimal)
-* ; -- read number to current memory cell (decimal)
-* @ -- write a random integer in current memory cell
-* ( -- binary shift left current memory cell
-* ) -- binary shift right current memory cell
-* { -- decimal shift left current memory cell
-* } -- decimal shift right current memory cell
+* `:` -- print cell value (decimal)
+* `;` -- read number to current memory cell (decimal)
+* `@` -- write a random integer in current memory cell
+* `(` -- binary shift left current memory cell
+* `)` -- binary shift right current memory cell
+* `{` -- decimal shift left current memory cell
+* `}` -- decimal shift right current memory cell
 
 Any decimal number in the code is directly read into the 
-current memory cell, so '128+' sets the current value to 129, 
-'0' zeroes a cell and so on.
+current memory cell, so `128+` sets the current value to 129, 
+`0` zeroes a cell and so on.
 
-AVR Instructions - shelly_avr.c
+AVR Instructions - `shelly_avr.c`
 -------------------------------
 
 So far:
-* _ -- delay for 10ms x cell value
+* `_` -- delay for the current cell value in milliseconds
 
-If there is a pending '$' on the input line between two instructions,
+If there is a pending `$` on the input line between two instructions,
 the execution stops (because CTRL-C or CTRL-D won't work).
 
