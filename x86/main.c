@@ -3,16 +3,21 @@
 #include <stdio.h>
 
 #include "shelly.h"
+#define LINE 256
 
-#define BUFSIZE 512
-
-void exec(FILE *f) 
+void exec(FILE *f, char *b, size_t len)
 {
-	char line[BUFSIZE] = {0}, c = 0;
-	int p = 0;
-	while ((c = getc(f)) > 0 && c != '!')
-		line[p++] = c;
-	shelly(line);
+	char c, *s = b;
+	memset(b, 0, len);
+	while ((c = getc(f)) > 0 && c != '!') {
+		*b++ = c;
+		if (!len--) {
+			puts("BUFFULL");
+			free(s);
+			exit(255);
+		}
+	}
+	shelly(s);
 }
 
 int main(int argc, const char *argv[])
@@ -22,13 +27,13 @@ int main(int argc, const char *argv[])
 		if (strcmp(argv[1], "-i") == 0) {
 			extern uint8_t tape[SHELLY_TAPESIZE];
 			extern unsigned short tp;
-			char line[BUFSIZE] = {0};
+			char line[LINE] = {0};
 			int e = 0;
 
 			while (42) {
 				printf(" [%c % 3u % 3u] ", e==0?'_':e, tp, tape[tp]);
-				if (!fgets(line, BUFSIZE, stdin)) return 0;
-				if ((e = strlen(line)) > 1 && line[e-2] == '\\') fgets(line+e-2, BUFSIZE-e, stdin);
+				if (!fgets(line, LINE, stdin)) return 0;
+				if ((e = strlen(line)) > 1 && line[e-2] == '\\') fgets(line+e-2, LINE-e, stdin);
 				if (*line == 10) {e = 0; continue;}
 				e = shelly(line);
 			}
@@ -42,9 +47,20 @@ int main(int argc, const char *argv[])
 				perror(argv[1]);
 				return 128;
 			}
-			exec(fp);
+			else {
+				char *buf;
+				size_t len;
+				fseek(fp, 0, SEEK_END);
+				len = ftell(fp);
+				buf = (char *) malloc(len);
+				rewind(fp);
+				exec(fp, buf, len);
+			}
 		}
 	}
-	else exec(stdin);
+	else {
+		char *buf = malloc(65535);
+		exec(stdin, buf, 1);
+	}
 	return 0;
 }
