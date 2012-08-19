@@ -15,42 +15,58 @@ extern unsigned short tp;
 
 void setup();
 
-#define DEBUG
 #define MAX 512
+#define cleartape(...) memset(tape, 0, SHELLY_TAPESIZE);
 
 char eebuf[MAX] EEMEM = {0};
+char line[MAX] = {0};
+
+void run()
+{
+	int e = shelly(line);
+	printf_P(PSTR(" [%c % 3u % 3u] "), e==0?'_':e, tp, tape[tp]);
+}
+
+void load()
+{
+	cli();
+	eeprom_read_block(line, eebuf, MAX);
+	sei();
+}
 
 int main()
 {
-	int e;
-	char line[MAX];
+	int e = 0;
 
-	eeprom_read_block(line, eebuf, MAX);
 	setup();
-	shelly(line);
-	memset(tape, 0, SHELLY_TAPESIZE);
+	load();
+	run();
+	cleartape();
 
 	while (42) {
 		gets(line); e = strlen(line);
 		if (!*line) continue;
-		if (line[e-1] == '\\') gets(line+e);
-		if (*line == '$') {
-			char c; e = 0;
-			while ((c=getchar()) != '$' && e<MAX-1) if (c > 32) line[e++] = c;
-			if (e < MAX-1) {
-				line[e++] = 0;
-				cli();
-				eeprom_update_block(line, eebuf, e);
-				sei();
-				printf("LOADED\n %s\n", line);
-				memset(tape, 0, SHELLY_TAPESIZE);
+		else if (line[e-1] == '\\') gets(line+e);
+		else if (*line == '$') {
+			if (e == 1) {
+				char c; e = 0;
+				while ((c=getchar()) != '$' && e<MAX-1) if (c > 32) line[e++] = c;
+				if (e < MAX-1) {
+					line[e++] = 0;
+					cli();
+					eeprom_update_block(line, eebuf, e);
+					sei();
+					printf("LOADED\n %s\n", line);
+					cleartape();
+				}
+				else {puts_P(PSTR("BUFF")); continue;}
 			}
-			else {puts_P(PSTR("BUFF")); continue;}
+			else if (line[1] == '$') {
+				load();
+				cleartape();
+			}
 		}
-		e = shelly(line);
-#ifdef DEBUG
-		printf_P(PSTR(" [%c % 3u % 3u]\n"), e==0?'_':e, tp, tape[tp]);
-#endif
+		run();
 	}
 	return 0;
 }
