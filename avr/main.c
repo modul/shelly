@@ -56,14 +56,18 @@ int main()
 					cli();
 					eeprom_update_block(line, eebuf, e);
 					sei();
-					printf("LOADED\n %s\n", line);
-					cleartape();
+					continue;
 				}
 				else {puts_P(PSTR("BUFF")); continue;}
 			}
-			else if (line[1] == '$') {
+			else if (e == 2 && line[1] == '$') {
 				load();
 				cleartape();
+			}
+			else if (e == 3 && line[2] == '$') {
+				load();
+				printf("%s\n\n", line);
+				continue;
 			}
 		}
 		run();
