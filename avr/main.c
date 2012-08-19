@@ -10,29 +10,18 @@
 #include "uart.h"
 #include "shelly.h"
 
-extern uint8_t tape[SHELLY_TAPESIZE];
-extern unsigned short tp;
-
-void setup();
-
 #define MAX 512
 #define cleartape(...) memset(tape, 0, SHELLY_TAPESIZE);
+
+extern uint8_t tape[SHELLY_TAPESIZE];
+extern unsigned short tp;
 
 char eebuf[MAX] EEMEM = {0};
 char line[MAX] = {0};
 
-void run()
-{
-	int e = shelly(line);
-	printf_P(PSTR(" [%c % 3u % 3u] "), e==0?'_':e, tp, tape[tp]);
-}
-
-void load()
-{
-	cli();
-	eeprom_read_block(line, eebuf, MAX);
-	sei();
-}
+void run();
+void load();
+void setup();
 
 int main()
 {
@@ -73,6 +62,19 @@ int main()
 		run();
 	}
 	return 0;
+}
+
+void run()
+{
+	int e = shelly(line);
+	printf_P(PSTR(" [%c % 3u % 3u] "), e==0?'_':e, tp, tape[tp]);
+}
+
+void load()
+{
+	cli();
+	eeprom_read_block(line, eebuf, MAX);
+	sei();
 }
 
 void setup()
