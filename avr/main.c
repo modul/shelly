@@ -1,7 +1,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
-#include <util/delay.h>
+#include <avr/eeprom.h>
 
 #include <string.h>
 #include <stdio.h>
@@ -16,17 +16,37 @@ extern unsigned short tp;
 void setup();
 
 #define DEBUG
+#define MAX 512
+
+char eebuf[MAX] EEMEM = {0};
 
 int main()
 {
 	int e;
-	char line[512];
+	char line[MAX];
+
+	eeprom_read_block(line, eebuf, MAX);
 	setup();
+	shelly(line);
+	memset(tape, 0, SHELLY_TAPESIZE);
 
 	while (42) {
 		gets(line); e = strlen(line);
-		if (line[e-1] == '\\') gets(line+e);
 		if (!*line) continue;
+		if (line[e-1] == '\\') gets(line+e);
+		if (*line == '$') {
+			char c; e = 0;
+			while ((c=getchar()) != '$' && e<MAX-1) if (c > 32) line[e++] = c;
+			if (e < MAX-1) {
+				line[e++] = 0;
+				cli();
+				eeprom_update_block(line, eebuf, e);
+				sei();
+				printf("LOADED\n %s\n", line);
+				memset(tape, 0, SHELLY_TAPESIZE);
+			}
+			else {puts_P(PSTR("BUFF")); continue;}
+		}
 		e = shelly(line);
 #ifdef DEBUG
 		printf_P(PSTR(" [%c % 3u % 3u]\n"), e==0?'_':e, tp, tape[tp]);
