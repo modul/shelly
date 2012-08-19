@@ -15,8 +15,8 @@ int exec(FILE *f, size_t len)
 
 	memset(b, 0, len);
 	while ((c = getc(f)) > 0 && c != '!') {
-		*b++ = c;
 		if (!len--) { free(s); exit(255); }
+		*b++ = c;
 	}
 	r = shelly(s);
 	free(s);
