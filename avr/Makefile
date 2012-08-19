@@ -1,13 +1,14 @@
 mcu_string=atmega8
 avrdude_mcu_string=m8
 freq_cpu=8000000UL
-sourcefiles=main.c uart.c stdio_wrapper.c ../shelly.c ../shelly_extra.c ../shelly_avr.c
+sourcefiles=main.c uart.c stdio_wrapper.c shelly.c shelly_extra.c shelly_avr.c
 projectname=project
 optlevel=3
 avrdude_programmer=avrispmkII
 avrdude_prog_port=usb
 
-VPATH += .
+VPATH += . ..
+
 
 #########		AVR Project Makefile	   #########
 ######										  ######
@@ -150,9 +151,7 @@ HEXFORMAT=ihex
 CFLAGS=-I. $(INC) -g -DF_CPU=$(freq_cpu) -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-fpack-struct -fshort-enums				\
 	-funsigned-bitfields -funsigned-char	\
-	-Wall 				\
-	-Wa,-ahlms=$(firstword					\
-	$(filter %.lst, $(<:.c=.lst)))
+	-Wall 				
 
 # c++ specific flags
 CPPFLAGS=-fno-exceptions			   \
