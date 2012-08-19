@@ -23,10 +23,6 @@ extern uint8_t tape[SHELLY_TAPESIZE];
 #ifdef __AVR_ARCH__
 int shelly_avr(const char **ip)
 {
-	if (**ip == '_') {
-		unsigned tmp;
-		for (tmp=0; tmp<tape[tp]; tmp++, _delay_ms(1));
-	}
 	else if (**ip == 'o') 
 		PORTD = (tape[tp]<<2)&0xFC;
 	else if (**ip == 'a') {

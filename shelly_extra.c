@@ -38,6 +38,14 @@ int shelly_extra(const char **ip)
 		--(*ip);
 		tape[tp] = num;
 	}
+	else if (i == '_') {
+		unsigned tmp;
+#ifdef __AVR_ARCH__
+		for (tmp=0; tmp<tape[tp]; tmp++, _delay_ms(1));
+#else
+		for (tmp=0; tmp<tape[tp]; tmp++, usleep(1000));
+#endif
+	}
 	else if (i == '(') tape[tp] <<= 1;
 	else if (i == ')') tape[tp] >>= 1;
 	else if (i == '{') tape[tp] *= 10;
