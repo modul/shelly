@@ -7,15 +7,17 @@ This is a simple brainfuck interpreter, with (always more
 extendable) extended functionality (which can be turned off by
 compiling to a strict version).
 
-It runs on x86 or microcontroller architectures. On micros,
-more extended commands can be added to do hardware specific
-tasks, e.g. like reading out analog input, setting analog output,
-setting digital outputs and so on.
+It runs on x86 (which means any PC here, architecture mostly irrelevant)
+or microcontroller. On micros, more extended commands can be added 
+to do hardware specific tasks, e.g. reading/writing analog/digital input/output,
+communicate via SPI or whatever task you need your application/device to be
+able to do.
 
 For each architecture there should be an appropriate frontend
-to handle program input. The x86 frontend (main.c) features
-an interactive mode (like a shell, good for debugging), reading
-from a file or stdin. 
+to handle program input. The x86 frontend (x86/main.c) features
+an interactive mode (like a shell, good for debugging) and reading
+from a file or stdin. It’s really a quite good and useable
+brainfuck interpreter.
 
 A microcontroller frontend could also implement the task
 to store brainfuck scripts on some memory and execute them
@@ -27,10 +29,10 @@ Strictly Brainfuck Instructions
 `+ - < > [ ] , .` -- as usual
 
 The x86 frontend also supports `!` to separate program code
-from program input, when reading code from stdin.
-On any architecture, when reading user input (`,` instruction),
-the system EOF or a `$` will get converted to zero. So the code
-`,[.,]` will terminate on EOF or when a $ was read.
+from program input when reading code from stdin.
+Anytime, when getting user input (`,` instruction),
+the system EOF or a dollar sign (`$`) will be converted to zero. 
+So the code `,[.,]` will terminate on EOF or when a `$` was read.
 This can be changed through `SHELLY_REAL_EOF` and `SHELLY_EOF`
 in `shelly.h`.
 
