@@ -41,22 +41,29 @@ These features can be turned off by defining 'strict'.
 So far:
 * `:` -- print cell value (decimal)
 * `;` -- read number to current memory cell (decimal)
-* `@` -- write a random integer in current memory cell
+* `0`..`255` -- any decimal number is directly put into the current cell
+* `_` -- delay for the current cell value in milliseconds
 * `(` -- binary shift left current memory cell
 * `)` -- binary shift right current memory cell
 * `{` -- decimal shift left current memory cell
 * `}` -- decimal shift right current memory cell
-
-Any decimal number in the code is directly read into the 
-current memory cell, so `128+` sets the current value to 129, 
-`0` zeroes a cell and so on.
+* `@` -- write a random integer in current memory cell
 
 AVR Instructions - `shelly_avr.c`
 -------------------------------
 
 So far:
-* `_` -- delay for the current cell value in milliseconds
+* `o` -- set digital outputs to bitmask in current cell
+* `p` -- set PWM1 to cell value
+* `P` -- set PWM2 to cell value
+* `a` -- current cell selects the analog channel to be read, ADC 
+         value is then written to the current cell
 
 If there is a pending `$` on the input line between two instructions,
 the execution stops (because CTRL-C or CTRL-D won't work).
+
+These are all just some ideas and can be completely changed, removed,
+rewritten or whatever, to fit your needs. Shelly should only give 
+some kind of a foundation. One that can be shaped to anything you 
+need - that’s the idea.
 
