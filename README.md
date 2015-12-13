@@ -24,13 +24,13 @@ to store brainfuck scripts on some memory and execute them
 without user interaction. It’s intended to be embedded
 in any way suitable.
 
-Strictly Brainfuck Instructions
+Strict Brainfuck Instructions
 -------------------------------
 `+ - < > [ ] , .` -- as usual
 
 The x86 frontend also supports `!` to separate program code
 from program input when reading code from stdin.
-Anytime, when getting user input (`,` instruction),
+Anytime, while getting user input (`,` instruction),
 the system EOF or a dollar sign (`$`) will be converted to zero. 
 So the code `,[.,]` will terminate on EOF or when a `$` was read.
 This can be changed through `SHELLY_REAL_EOF` and `SHELLY_EOF`
